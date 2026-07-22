@@ -1,223 +1,493 @@
-import React from 'react';
-import { ArrowDown, Instagram, ShoppingBag, Sparkles } from 'lucide-react';
+import React from "react";
+import {
+  AppBar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Container,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import ShoppingBagRoundedIcon from "@mui/icons-material/ShoppingBagRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
-const instagramUrl = 'https://www.instagram.com/bake.therapie.ca/';
+const instagramUrl = "https://www.instagram.com/bake.therapie.ca/";
 
 const cookies = [
   {
-    id: 'brown-butter',
-    name: 'Brown Butter Chocolate Chunk',
-    kicker: 'The comfort classic',
+    id: "brown-butter",
+    name: "Ruth's Chocolate Chips",
+    kicker: "Cookie drop classic",
     summary:
-      'Deep brown-butter dough, glossy dark chocolate pools, and a salted finish that keeps the bite rich without going heavy.',
-    notes: ['brown butter', 'dark chocolate', 'sea salt'],
-    image: '/images/brown-butter-chocolate.png',
-    alt: 'A thick brown butter chocolate chunk cookie with glossy chocolate pools.',
-    accent: '#8b4f35',
-    wash: '#f3d8c8',
+      "Rich brown butter dough loaded with semi-sweet and Belgian dark chocolate.",
+    notes: ["brown butter", "semi-sweet", "Belgian dark chocolate"],
+    image: "/images/brown-butter-chocolate.png",
+    alt: "A rich chocolate chip cookie with glossy pools of chocolate.",
+    accent: "#8b4f35",
+    wash: "#f3d8c8",
   },
   {
-    id: 'pistachio-rose',
-    name: 'Pistachio Rose',
-    kicker: 'Floral and nutty',
+    id: "pistachio-rose",
+    name: "Ash's Daily Matcha",
+    kicker: "Earthy and creamy",
     summary:
-      'A soft bakery-style cookie layered with crushed pistachio and delicate rose notes for a pretty, giftable bite.',
-    notes: ['pistachio', 'rose petals', 'soft crumb'],
-    image: '/images/pistachio-rose.png',
-    alt: 'A pistachio rose cookie topped with crushed pistachios and rose petals.',
-    accent: '#597a42',
-    wash: '#e7efd8',
+      "Earthy Japanese matcha paired with smooth Belgian white chocolate.",
+    notes: ["Japanese matcha", "Belgian white chocolate", "smooth finish"],
+    image: "/images/matcha-white-chocolate.png",
+    alt: "A matcha cookie with chunks of white chocolate.",
+    accent: "#597a42",
+    wash: "#e7efd8",
   },
   {
-    id: 'matcha-white',
-    name: 'Matcha White Chocolate',
-    kicker: 'Earthy meets creamy',
-    summary:
-      'Vivid matcha dough folded with white chocolate for a balanced cookie that is mellow, creamy, and just a little fancy.',
-    notes: ['matcha', 'white chocolate', 'chewy center'],
-    image: '/images/matcha-white-chocolate.png',
-    alt: 'A green matcha cookie with white chocolate chunks.',
-    accent: '#2f6f5d',
-    wash: '#d8eee8',
+    id: "matcha-white",
+    name: "Charlie's Triple Chocolate",
+    kicker: "For chocolate lovers",
+    summary: "Rich cocoa cookie loaded with three varieties of chocolate.",
+    notes: ["rich cocoa", "triple chocolate", "decadent bite"],
+    image: "/images/cookies-and-cream.png",
+    alt: "A dark cocoa cookie with multiple chocolate mix-ins.",
+    accent: "#4a2d26",
+    wash: "#ebdfd8",
   },
   {
-    id: 'red-velvet',
-    name: 'Red Velvet Cream Cheese',
-    kicker: 'A dramatic sweet spot',
-    summary:
-      'Cocoa-kissed red velvet with a creamy center, made for people who want their cookie drop to feel like dessert-dessert.',
-    notes: ['red velvet', 'cream cheese', 'cocoa crumb'],
-    image: '/images/red-velvet-cream-cheese.png',
-    alt: 'A red velvet cookie with a cream cheese center.',
-    accent: '#9a1f2b',
-    wash: '#f1d9dc',
+    id: "red-velvet",
+    name: "Lotso's Strawberry Basket",
+    kicker: "Bright and fruity",
+    summary: "Sweet cookie bursting with bright, strawberry flavor.",
+    notes: ["strawberry", "sweet crumb", "fruity pop"],
+    image: "/images/red-velvet-cream-cheese.png",
+    alt: "A vibrant red cookie with a soft center.",
+    accent: "#a32639",
+    wash: "#f4dbe0",
   },
   {
-    id: 'cookies-cream',
-    name: 'Cookies and Cream',
-    kicker: 'Crunchy, creamy, nostalgic',
-    summary:
-      'Vanilla dough packed with chocolate cookie crumble and cream pieces, built for the first cookie to disappear from the box.',
-    notes: ['vanilla dough', 'cookie crumble', 'cream pieces'],
-    image: '/images/cookies-and-cream.png',
-    alt: 'A cookies and cream cookie with dark cookie crumble and cream pieces.',
-    accent: '#252525',
-    wash: '#e5e1dc',
+    id: "cookies-cream",
+    name: "Garfield's Morning Brew",
+    kicker: "Bold coffee hit",
+    summary: "Bold Japanese coffee cookie topped with toasted almond slivers.",
+    notes: ["Japanese coffee", "toasted almond", "deep roast"],
+    image: "/images/brown-butter-chocolate.png",
+    alt: "A coffee-toned cookie topped with almond slivers.",
+    accent: "#5a4638",
+    wash: "#efe6de",
+  },
+  {
+    id: "salted-caramel",
+    name: "Earl's Rubies",
+    kicker: "Fragrant tea notes",
+    summary: "Fragrant Earl Grey cookie dotted with tart dried cranberries.",
+    notes: ["Earl Grey", "dried cranberries", "tart finish"],
+    image: "/images/pistachio-rose.png",
+    alt: "A cookie with floral notes and cranberry accents.",
+    accent: "#6d5660",
+    wash: "#efe6ea",
   },
 ];
 
 function App() {
   return (
-    <>
-      <header className="site-header" aria-label="Bake Therapy site header">
-        <a className="brand" href="#top" aria-label="Bake Therapy home">
-          <span className="brand-mark" aria-hidden="true">
-            BT
-          </span>
-          <span className="brand-name">Bake Therapy</span>
-        </a>
-
-        <nav className="top-nav" aria-label="Cookie navigation">
-          {cookies.slice(0, 3).map((cookie) => (
-            <a key={cookie.id} href={`#${cookie.id}`}>
-              {cookie.name.split(' ')[0]}
-            </a>
-          ))}
-        </nav>
-
-        <a
-          className="social-link"
-          href={instagramUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open Bake Therapy on Instagram"
+    <Box sx={{ bgcolor: "background.default", color: "text.primary" }}>
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={{
+          mt: 1.5,
+          px: { xs: 1, md: 2 },
+          bgcolor: "transparent",
+          pointerEvents: "none",
+        }}
+      >
+        <Toolbar
+          sx={{
+            pointerEvents: "auto",
+            minHeight: 68,
+            borderRadius: 99,
+            border: "1px solid rgba(34, 26, 18, 0.14)",
+            bgcolor: "rgba(255, 249, 241, 0.84)",
+            backdropFilter: "blur(16px)",
+            boxShadow: "0 18px 48px rgba(26, 19, 13, 0.12)",
+            gap: 1,
+          }}
         >
-          <Instagram size={18} strokeWidth={2.4} aria-hidden="true" />
-          <span>@bake.therapie.ca</span>
-        </a>
-      </header>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1.2}
+            sx={{ mr: 1, minWidth: 0, minHeight: { xs: 56, sm: 64 }, flex: 1 }}
+          >
+            <Box
+              component="img"
+              src="/images/logo.svg"
+              alt="Bake Therapy logo"
+              sx={{
+                width: { xs: 150, sm: 225 },
+                height: { xs: 42, sm: 64 },
+                objectFit: "contain",
+                flexShrink: 0,
+              }}
+            />
+          </Stack>
 
-      <aside className="section-dots" aria-label="Jump to cookie section">
+          <Button
+            href={instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+            color="secondary"
+            variant="contained"
+            startIcon={<InstagramIcon />}
+            sx={{ borderRadius: 99, px: 1.8, py: 1, fontWeight: 700 }}
+          >
+            <Box
+              component="span"
+              sx={{ display: { xs: "none", sm: "inline" } }}
+            >
+              bake.therapie.ca
+            </Box>
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Box
+        component="aside"
+        aria-label="Jump to cookie section"
+        sx={{
+          position: "fixed",
+          top: { md: "45%", lg: "53%" },
+          left: { md: 18, lg: 30 },
+          transform: "translateY(-50%)",
+          zIndex: 12,
+          display: { xs: "none", md: "grid" },
+          gap: 1.5,
+        }}
+      >
         {cookies.map((cookie, index) => (
-          <a
+          <IconButton
             key={cookie.id}
             href={`#${cookie.id}`}
             aria-label={`Jump to ${cookie.name}`}
+            size="small"
+            sx={{
+              width: 40,
+              height: 40,
+              border: "1px solid rgba(34, 26, 18, 0.2)",
+              bgcolor: "rgba(255, 249, 241, 0.86)",
+              fontWeight: 700,
+              fontSize: "0.74rem",
+              "&:hover": { bgcolor: "secondary.main", color: "#fff" },
+            }}
           >
-            <span>{String(index + 1).padStart(2, '0')}</span>
-          </a>
+            {String(index + 1).padStart(2, "0")}
+          </IconButton>
         ))}
-      </aside>
+      </Box>
 
-      <main className="scroll-stage">
-        <section className="hero" id="top" aria-labelledby="hero-title">
-          <div className="hero-media" aria-hidden="true">
-            <img
-              src="/images/hero-cookie-flight.png"
-              alt=""
-              loading="eager"
-            />
-          </div>
-          <div className="hero-content">
-            <p className="eyebrow">
-              <Sparkles size={18} strokeWidth={2.4} aria-hidden="true" />
-              Small-batch cookie therapy
-            </p>
-            <h1 id="hero-title">Bake Therapy</h1>
-            <p className="hero-copy">
-              A scrollable cookie showcase for handcrafted drops, cozy cravings,
-              and boxes that look as good as they taste.
-            </p>
-            <div className="hero-actions" aria-label="Primary actions">
-              <a className="button button-primary" href="#brown-butter">
-                <ArrowDown size={19} strokeWidth={2.4} aria-hidden="true" />
+      <Box component="main">
+        <Box
+          id="top"
+          component="section"
+          sx={{
+            minHeight: "100svh",
+            display: "grid",
+            alignItems: "center",
+            px: { xs: 3.5, md: 11 },
+            pt: { xs: 12, md: 14 },
+            pb: { xs: 9, md: 7 },
+            color: "#fff9f1",
+            backgroundImage:
+              "linear-gradient(90deg, rgba(20, 13, 9, 0.88) 0%, rgba(20, 13, 9, 0.58) 45%, rgba(20, 13, 9, 0.18) 100%), url(/images/hero-cookie-flight.png)",
+            backgroundSize: "cover",
+            backgroundPosition: { xs: "65% center", md: "56% center" },
+          }}
+        >
+          <Container
+            maxWidth="md"
+            disableGutters
+            sx={{ ml: { xs: 0.5, md: 4 }, pr: { xs: 1, md: 2 } }}
+          >
+            <Typography
+              id="hero-title"
+              variant="h1"
+              sx={{
+                fontSize: { xs: "3.4rem", md: "7rem" },
+                lineHeight: 0.9,
+                maxWidth: "10ch",
+              }}
+            >
+              Bake Thérapie
+            </Typography>
+
+            <Typography
+              sx={{
+                mt: 2.5,
+                maxWidth: 640,
+                fontSize: { xs: "1.05rem", md: "1.4rem" },
+                color: "rgba(255, 249, 241, 0.9)",
+              }}
+            >
+              Baking was our chef's therapy during stressful times. Now, Bake
+              Therapie is here to be yours.
+            </Typography>
+
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.2}
+              sx={{ mt: 3.5 }}
+            >
+              <Button
+                href="#brown-butter"
+                variant="contained"
+                color="primary"
+                startIcon={<ArrowDownwardRoundedIcon />}
+                sx={{ borderRadius: 99, py: 1.2, px: 2.2, fontWeight: 800 }}
+              >
                 View cookies
-              </a>
-              <a
-                className="button button-secondary"
+              </Button>
+              <Button
                 href={instagramUrl}
                 target="_blank"
                 rel="noreferrer"
+                variant="outlined"
+                color="inherit"
+                startIcon={<InstagramIcon />}
+                sx={{
+                  borderRadius: 99,
+                  py: 1.2,
+                  px: 2.2,
+                  color: "#fff9f1",
+                  borderColor: "rgba(255, 249, 241, 0.4)",
+                }}
               >
-                <Instagram size={19} strokeWidth={2.4} aria-hidden="true" />
                 Instagram
-              </a>
-            </div>
-          </div>
-          <a className="hero-peek" href="#brown-butter">
-            <span>First up</span>
-            Brown Butter Chocolate Chunk
-          </a>
-        </section>
+              </Button>
+            </Stack>
+          </Container>
+        </Box>
 
         {cookies.map((cookie, index) => (
           <CookieSection key={cookie.id} cookie={cookie} index={index} />
         ))}
 
-        <section className="closing" aria-labelledby="closing-title">
-          <p className="eyebrow">
-            <Sparkles size={18} strokeWidth={2.4} aria-hidden="true" />
-            Cookie drops by Bake Therapy
-          </p>
-          <h2 id="closing-title">Ready for the next box?</h2>
-          <p>
-            Follow the latest cookie drops, flavors, and pickup details on
-            Instagram.
-          </p>
-          <a
-            className="button button-primary"
-            href={instagramUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Instagram size={19} strokeWidth={2.4} aria-hidden="true" />
-            Visit @bake.therapie.ca
-          </a>
-        </section>
-      </main>
-    </>
+        <Box
+          component="section"
+          sx={{
+            minHeight: "68svh",
+            display: "grid",
+            placeItems: "center",
+            textAlign: "center",
+            px: 2,
+            py: 10,
+            bgcolor: "#241b17",
+            color: "#fff9f1",
+          }}
+        >
+          <Container maxWidth="md">
+            <Stack
+              direction="row"
+              spacing={1}
+              justifyContent="center"
+              sx={{ mb: 2 }}
+            >
+              <AutoAwesomeRoundedIcon fontSize="small" />
+              <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>
+                COOKIE DROPS BY BAKE THÉRAPIE
+              </Typography>
+            </Stack>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: "2.8rem", md: "5.2rem" },
+                lineHeight: 0.95,
+              }}
+            >
+              Ready for the next box?
+            </Typography>
+            <Typography
+              sx={{
+                mt: 2.4,
+                mb: 3.5,
+                color: "rgba(255, 249, 241, 0.78)",
+                fontSize: "1.1rem",
+              }}
+            >
+              Follow the latest cookie drops, flavors, and pickup details on
+              Instagram.
+            </Typography>
+            <Button
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="contained"
+              color="primary"
+              startIcon={<InstagramIcon />}
+              sx={{ borderRadius: 99, py: 1.2, px: 2.4, fontWeight: 800 }}
+            >
+              bake.therapie.ca
+            </Button>
+          </Container>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
 function CookieSection({ cookie, index }) {
   return (
-    <section
-      className={`cookie-section ${index % 2 === 1 ? 'is-reversed' : ''}`}
+    <Box
+      component="section"
       id={cookie.id}
-      style={{
-        '--accent': cookie.accent,
-        '--wash': cookie.wash,
-      }}
       aria-labelledby={`${cookie.id}-title`}
+      sx={{
+        px: { xs: 2, md: 7 },
+        py: { xs: 7, md: 9 },
+        background: `linear-gradient(120deg, ${cookie.wash} 0%, #fff9f1 50%, #fff 100%)`,
+      }}
     >
-      <div className="section-number" aria-hidden="true">
-        {String(index + 1).padStart(2, '0')}
-      </div>
-
-      <div className="cookie-visual">
-        <img src={cookie.image} alt={cookie.alt} loading="lazy" />
-      </div>
-
-      <div className="cookie-story">
-        <p className="cookie-kicker">{cookie.kicker}</p>
-        <h2 id={`${cookie.id}-title`}>{cookie.name}</h2>
-        <p>{cookie.summary}</p>
-        <ul className="note-list" aria-label={`${cookie.name} notes`}>
-          {cookie.notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-        <a
-          className="order-link"
-          href={instagramUrl}
-          target="_blank"
-          rel="noreferrer"
+      <Card
+        elevation={0}
+        sx={{
+          position: "relative",
+          overflow: "hidden",
+          border: "1px solid rgba(36, 27, 23, 0.12)",
+          borderBottom: `10px solid ${cookie.accent}`,
+          borderRadius: 1.5,
+          background: "rgba(255, 255, 255, 0.75)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        <Typography
+          aria-hidden="true"
+          sx={{
+            position: "absolute",
+            top: 16,
+            right: { xs: 16, md: 28 },
+            fontSize: { xs: "4rem", md: "8.5rem" },
+            fontWeight: 800,
+            lineHeight: 0.88,
+            color: cookie.accent,
+            opacity: 0.12,
+          }}
         >
-          <ShoppingBag size={19} strokeWidth={2.4} aria-hidden="true" />
-          DM to reserve
-        </a>
-      </div>
-    </section>
+          {String(index + 1).padStart(2, "0")}
+        </Typography>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: index % 2 === 1 ? "0.95fr 1.05fr" : "1.05fr 0.95fr",
+            },
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={cookie.image}
+            alt={cookie.alt}
+            loading="lazy"
+            sx={{
+              order: { xs: 0, md: index % 2 === 1 ? 2 : 1 },
+              aspectRatio: "1 / 1",
+              objectFit: "cover",
+              p: { xs: 1.2, md: 1.8 },
+              borderRadius: 2,
+            }}
+          />
+
+          <CardContent
+            sx={{
+              order: { xs: 1, md: index % 2 === 1 ? 1 : 2 },
+              px: { xs: 2, md: 4 },
+              py: { xs: 2.2, md: 3 },
+              display: "grid",
+              alignContent: "center",
+              gap: 1.2,
+            }}
+          >
+            <Typography
+              sx={{
+                color: cookie.accent,
+                fontWeight: 800,
+                letterSpacing: 0.4,
+                fontSize: "0.9rem",
+              }}
+            >
+              {cookie.kicker.toUpperCase()}
+            </Typography>
+            <Typography
+              id={`${cookie.id}-title`}
+              variant="h2"
+              sx={{
+                fontSize: { xs: "2.5rem", md: "4.2rem" },
+                lineHeight: 0.95,
+              }}
+            >
+              {cookie.name}
+            </Typography>
+            <Typography
+              sx={{
+                color: "rgba(36, 27, 23, 0.8)",
+                fontSize: { xs: "1rem", md: "1.12rem" },
+              }}
+            >
+              {cookie.summary}
+            </Typography>
+
+            <Stack
+              direction="row"
+              spacing={1}
+              useFlexGap
+              flexWrap="wrap"
+              sx={{ mt: 1 }}
+            >
+              {cookie.notes.map((note) => (
+                <Chip
+                  key={note}
+                  label={note}
+                  size="small"
+                  sx={{
+                    color: cookie.accent,
+                    borderColor: `${cookie.accent}66`,
+                    bgcolor: "rgba(255, 255, 255, 0.72)",
+                    fontWeight: 700,
+                  }}
+                  variant="outlined"
+                />
+              ))}
+            </Stack>
+
+            <Button
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              startIcon={<ShoppingBagRoundedIcon />}
+              sx={{
+                mt: 1.2,
+                width: { xs: "100%", sm: "fit-content" },
+                borderRadius: 99,
+                bgcolor: cookie.accent,
+                color: "#fff9f1",
+                px: 2.2,
+                py: 1,
+                fontWeight: 800,
+                "&:hover": {
+                  bgcolor: cookie.accent,
+                  filter: "brightness(0.93)",
+                },
+              }}
+            >
+              DM to reserve
+            </Button>
+          </CardContent>
+        </Box>
+      </Card>
+    </Box>
   );
 }
 
