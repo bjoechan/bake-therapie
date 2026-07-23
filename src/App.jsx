@@ -108,33 +108,69 @@ function App() {
       >
         <Toolbar
           sx={{
+            display: { xs: "grid", sm: "flex" },
+            gridTemplateColumns: { xs: "1fr auto 58px" },
+            gridTemplateAreas: { xs: '"name logo icon"' },
+            alignItems: "center",
             pointerEvents: "auto",
-            minHeight: 68,
+            minHeight: { xs: 64, sm: 72 },
             borderRadius: 99,
             border: "1px solid rgba(34, 26, 18, 0.14)",
             bgcolor: "rgba(255, 249, 241, 0.84)",
             backdropFilter: "blur(16px)",
             boxShadow: "0 18px 48px rgba(26, 19, 13, 0.12)",
-            gap: 1,
+            gap: { xs: 0.6, sm: 1 },
           }}
         >
           <Stack
             direction="row"
             alignItems="center"
-            spacing={1.2}
-            sx={{ mr: 1, minWidth: 0, minHeight: { xs: 56, sm: 64 }, flex: 1 }}
+            spacing={{ xs: 0.7, sm: 1.1, md: 1.2 }}
+            sx={{
+              display: { xs: "contents", sm: "flex" },
+              mr: { sm: 1 },
+              minWidth: { sm: 0 },
+              minHeight: { xs: 50, sm: 60 },
+              flex: { sm: 1 },
+            }}
           >
             <Box
               component="img"
               src="/images/logo.svg"
               alt="Bake Therapy logo"
               sx={{
-                width: { xs: 150, sm: 225 },
-                height: { xs: 42, sm: 64 },
+                width: { xs: 120, sm: 165, md: 205 },
+                height: { xs: 40, sm: 54, md: 64 },
                 objectFit: "contain",
+                objectPosition: "center",
+                transform: {
+                  xs: "translateY(2px)",
+                  sm: "translateY(1px)",
+                  md: "translateY(0px)",
+                },
+                display: "block",
+                gridArea: { xs: "logo" },
+                gridColumn: { xs: 2 },
+                justifySelf: { xs: "center" },
                 flexShrink: 0,
               }}
             />
+            <Typography
+              sx={{
+                fontWeight: 800,
+                fontSize: { xs: "1.1rem", sm: "1.35rem", md: "1.62rem" },
+                lineHeight: 1.05,
+                color: "#2b201c",
+                whiteSpace: "nowrap",
+                display: "flex",
+                alignItems: "center",
+                gridArea: { xs: "name" },
+                gridColumn: { xs: 1 },
+                justifySelf: { xs: "start" },
+              }}
+            >
+              Bake Thérapie
+            </Typography>
           </Stack>
 
           <Button
@@ -143,8 +179,33 @@ function App() {
             rel="noreferrer"
             color="secondary"
             variant="contained"
+            aria-label="Open Instagram"
             startIcon={<InstagramIcon />}
-            sx={{ borderRadius: 99, px: 1.8, py: 1, fontWeight: 700 }}
+            sx={{
+              alignSelf: "center",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gridArea: { xs: "icon" },
+              gridColumn: { xs: 3 },
+              borderRadius: 99,
+              px: { xs: 0, sm: 1.8 },
+              py: { xs: 0, sm: 1 },
+              width: { xs: 58, sm: "auto" },
+              height: { xs: 46, sm: 46 },
+              minWidth: { xs: 58, sm: "auto" },
+              lineHeight: 1,
+              fontWeight: 700,
+              "& .MuiButton-startIcon": {
+                m: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              "& .MuiSvgIcon-root": {
+                fontSize: { xs: "1.85rem", sm: "1.5rem" },
+              },
+            }}
           >
             <Box
               component="span"
@@ -386,6 +447,7 @@ function CookieSection({ cookie, index }) {
       sx={{
         px: { xs: 2, md: 7 },
         py: { xs: 7, md: 9 },
+        overflowX: "clip",
         background: `linear-gradient(120deg, ${cookie.wash} 0%, #fff9f1 50%, #fff 100%)`,
       }}
     >
@@ -393,6 +455,7 @@ function CookieSection({ cookie, index }) {
         elevation={0}
         sx={{
           position: "relative",
+          maxWidth: "100%",
           overflow: "hidden",
           border: "1px solid rgba(36, 27, 23, 0.12)",
           borderBottom: `10px solid ${cookie.accent}`,
@@ -420,6 +483,7 @@ function CookieSection({ cookie, index }) {
         <Box
           sx={{
             display: "grid",
+            minWidth: 0,
             gridTemplateColumns: {
               xs: "1fr",
               md: index % 2 === 1 ? "0.95fr 1.05fr" : "1.05fr 0.95fr",
@@ -445,6 +509,7 @@ function CookieSection({ cookie, index }) {
               order: { xs: 1, md: index % 2 === 1 ? 1 : 2 },
               px: { xs: 2, md: 4 },
               py: { xs: 2.2, md: 3 },
+              minWidth: 0,
               display: "grid",
               alignContent: "center",
               gap: 1.2,
@@ -464,16 +529,20 @@ function CookieSection({ cookie, index }) {
               id={`${cookie.id}-title`}
               variant="h2"
               sx={{
-                fontSize: { xs: "2.5rem", md: "4.2rem" },
+                maxWidth: "100%",
+                fontSize: { xs: "2.2rem", sm: "2.7rem", md: "4.2rem" },
                 lineHeight: 0.95,
+                overflowWrap: "anywhere",
               }}
             >
               {cookie.name}
             </Typography>
             <Typography
               sx={{
+                maxWidth: "100%",
                 color: "rgba(36, 27, 23, 0.8)",
                 fontSize: { xs: "1rem", md: "1.12rem" },
+                overflowWrap: "anywhere",
               }}
             >
               {cookie.summary}
@@ -492,10 +561,21 @@ function CookieSection({ cookie, index }) {
                   label={note}
                   size="small"
                   sx={{
+                    maxWidth: "100%",
+                    height: "auto",
                     color: cookie.accent,
                     borderColor: `${cookie.accent}66`,
                     bgcolor: "rgba(255, 255, 255, 0.72)",
                     fontWeight: 700,
+                    "& .MuiChip-label": {
+                      display: "block",
+                      maxWidth: "100%",
+                      whiteSpace: "normal",
+                      overflowWrap: "anywhere",
+                      textAlign: "center",
+                      lineHeight: 1.05,
+                      py: 0.2,
+                    },
                   }}
                   variant="outlined"
                 />
