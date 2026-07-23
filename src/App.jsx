@@ -92,6 +92,8 @@ const cookies = [
 ];
 
 function App() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <Box sx={{ bgcolor: "background.default", color: "text.primary" }}>
       <AppBar
@@ -331,6 +333,44 @@ function App() {
               bake.therapie.ca
             </Button>
           </Container>
+        </Box>
+
+        <Box
+          component="footer"
+          sx={{
+            py: 2.2,
+            px: 2,
+            bgcolor: "#1a120f",
+            borderTop: "1px solid rgba(255, 249, 241, 0.1)",
+            textAlign: "center",
+          }}
+        >
+          <Stack spacing={0.4} alignItems="center">
+            <Typography
+              sx={{
+                color: "rgba(255, 249, 241, 0.72)",
+                fontSize: "0.82rem",
+                letterSpacing: 0.3,
+              }}
+            >
+              © {currentYear} Bake Therapie. All rights reserved.
+            </Typography>
+            <Typography
+              component="a"
+              href="mailto:baketherapie@gmail.com"
+              sx={{
+                color: "rgba(255, 249, 241, 0.9)",
+                textDecoration: "none",
+                fontSize: "0.86rem",
+                letterSpacing: 0.2,
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              baketherapie@gmail.com
+            </Typography>
+          </Stack>
         </Box>
       </Box>
     </Box>
