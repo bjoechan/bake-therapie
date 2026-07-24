@@ -137,7 +137,7 @@ function App() {
             <Box
               component="img"
               src="/images/logo.svg"
-              alt="Bake Therapy logo"
+              alt="Bake Thérapie logo"
               sx={{
                 width: { xs: 120, sm: 165, md: 205 },
                 height: { xs: 40, sm: 54, md: 64 },

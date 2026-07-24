@@ -1,6 +1,6 @@
-# Bake Therapy Showcase
+# Bake Thérapie Showcase
 
-A React and Vite cookie showcase site for Bake Therapy, configured for Netlify.
+A React and Vite cookie showcase site for Bake Thérapie, configured for Netlify.
 
 ## Local Development
 
