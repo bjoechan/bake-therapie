@@ -19,6 +19,7 @@ import ShoppingBagRoundedIcon from "@mui/icons-material/ShoppingBagRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
 const instagramUrl = "https://www.instagram.com/bake.therapie.ca/";
+const orderUrl = "https://forms.gle/o256cSaFt4NpRzhc7";
 
 const cookies = [
   {
@@ -37,9 +38,8 @@ const cookies = [
     id: "pistachio-rose",
     name: "Ash's Daily Matcha",
     kicker: "Earthy and creamy",
-    summary:
-      "Earthy Japanese matcha paired with smooth Belgian white chocolate.",
-    notes: ["Japanese matcha", "Belgian white chocolate", "smooth finish"],
+    summary: "Earthy matcha paired with smooth Belgian white chocolate.",
+    notes: ["Matcha", "Belgian white chocolate", "smooth finish"],
     image: "/images/closeups/ash-daily-matcha.png",
     alt: "A matcha cookie with chunks of white chocolate.",
     accent: "#597a42",
@@ -583,7 +583,7 @@ function CookieSection({ cookie, index }) {
             </Stack>
 
             <Button
-              href={instagramUrl}
+              href={orderUrl}
               target="_blank"
               rel="noreferrer"
               startIcon={<ShoppingBagRoundedIcon />}
@@ -602,7 +602,7 @@ function CookieSection({ cookie, index }) {
                 },
               }}
             >
-              DM to reserve
+              Click here to order
             </Button>
           </CardContent>
         </Box>
