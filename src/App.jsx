@@ -414,7 +414,7 @@ function App() {
                 letterSpacing: 0.3,
               }}
             >
-              © {currentYear} Bake Therapie. All rights reserved.
+              © {currentYear} Bake Therapie Inc. All rights reserved.
             </Typography>
             <Typography
               component="a"
