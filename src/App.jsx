@@ -18,7 +18,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import ShoppingBagRoundedIcon from "@mui/icons-material/ShoppingBagRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
-const instagramUrl = "https://www.instagram.com/bake.therapie.ca/";
+const instagramUrl = "https://www.instagram.com/baketherapie.ca/";
 const orderUrl = "https://forms.gle/o256cSaFt4NpRzhc7";
 
 const cookies = [
@@ -211,7 +211,7 @@ function App() {
               component="span"
               sx={{ display: { xs: "none", sm: "inline" } }}
             >
-              bake.therapie.ca
+              baketherapie.ca
             </Box>
           </Button>
         </Toolbar>
@@ -391,7 +391,7 @@ function App() {
               startIcon={<InstagramIcon />}
               sx={{ borderRadius: 99, py: 1.2, px: 2.4, fontWeight: 800 }}
             >
-              bake.therapie.ca
+              baketherapie.ca
             </Button>
           </Container>
         </Box>
