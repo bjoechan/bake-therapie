@@ -31,6 +31,21 @@
   Google Workspace**, hosting/database stays on **Azure**, staff/customer sign-in uses **Google**. Do
   not treat these as needing to be consolidated onto one provider.
 
+## Domain Model: Products
+
+- Cookie/product catalog lives in the database (`Product` table), not hardcoded in the frontend —
+  the static `cookies` array in `frontend/src/App.jsx` should be replaced by data fetched from
+  `GET /api/products` so staff can add/update/remove products without a code change or redeploy.
+- Suggested fields: `Name`, `Kicker`/`TaglineShort` (short promotional tag line), `PromotionalTags`
+  (list, e.g. "New", "Seasonal", "Best Seller"), `Summary` (short blurb), `FullDescription` (long-form
+  copy), `ImageUrl`, `Price`, `IsAvailable`, `DisplayOrder`.
+- Purely presentational/styling fields (accent colors, gradients) may stay as frontend constants
+  keyed by product id, unless staff need control over those too.
+- Orders reference products by `ProductId` (foreign key), not free-text name, so price/availability
+  is validated server-side rather than trusted from the order form.
+- Admin catalog management (create/update/remove products) is a `Staff`/`Owner`-only API
+  (e.g. `/api/admin/products`); the public `/api/products` endpoint only exposes available products.
+
 ## Domain Model: Orders
 
 - Customer orders are **guest checkout only** for v1 — no customer account/password system. Capture
