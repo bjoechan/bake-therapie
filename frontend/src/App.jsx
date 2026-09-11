@@ -19,7 +19,6 @@ import ShoppingBagRoundedIcon from "@mui/icons-material/ShoppingBagRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
 const instagramUrl = "https://www.instagram.com/baketherapie.ca/";
-const orderUrl = "https://forms.gle/o256cSaFt4NpRzhc7";
 
 const cookies = [
   {
@@ -583,26 +582,18 @@ function CookieSection({ cookie, index }) {
             </Stack>
 
             <Button
-              href={orderUrl}
-              target="_blank"
-              rel="noreferrer"
+              disabled
               startIcon={<ShoppingBagRoundedIcon />}
               sx={{
                 mt: 1.2,
                 width: { xs: "100%", sm: "fit-content" },
                 borderRadius: 99,
-                bgcolor: cookie.accent,
-                color: "#fff9f1",
                 px: 2.2,
                 py: 1,
                 fontWeight: 800,
-                "&:hover": {
-                  bgcolor: cookie.accent,
-                  filter: "brightness(0.93)",
-                },
               }}
             >
-              Click here to order
+              Online ordering launching soon
             </Button>
           </CardContent>
         </Box>
