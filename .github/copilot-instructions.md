@@ -57,6 +57,11 @@
   columns, so an order can contain multiple line items.
 - Track `CreatedAt`/`UpdatedAt`/`FulfilledAt` as timestamps (nullable `FulfilledAt` implies the
   "fulfilled" boolean) rather than separate date + flag pairs.
+- `FulfillmentType` enum (`Pickup / Delivery`) — fixed small set, not a string.
+- `PickupLocation`: string, nullable — only set when `FulfillmentType == Pickup`.
+- `TransactionLocation`: plain string (e.g. "Farmers Market – Downtown", "Online", "Pop-up – [event]").
+  Free text on the backend since the set of markets/channels isn't fixed yet; constrain it to a
+  dropdown of known options in the frontend form later without needing a schema change.
 
 ## Auth
 
