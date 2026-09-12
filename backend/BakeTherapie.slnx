@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BakeTherapie.Api.Tests/BakeTherapie.Api.Tests.csproj" />
+  <Project Path="BakeTherapie.Api/BakeTherapie.Api.csproj" />
+</Solution>
