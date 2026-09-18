@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   AppBar,
+  Badge,
   Box,
   Button,
   Card,
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
   Container,
+  Fab,
   IconButton,
   Stack,
   Toolbar,
@@ -17,81 +21,92 @@ import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import ShoppingBagRoundedIcon from "@mui/icons-material/ShoppingBagRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
+import { fetchProducts } from "./api";
+import { getCookiePresentation } from "./cookiePresentation";
+import OrderCart from "./OrderCart";
 
 const instagramUrl = "https://www.instagram.com/baketherapie.ca/";
 
-const cookies = [
-  {
-    id: "brown-butter",
-    name: "Ruth's Chocolate Chips",
-    kicker: "Cookie drop classic",
-    summary:
-      "Rich brown butter dough loaded with semi-sweet and Belgian dark chocolate.",
-    notes: ["brown butter", "semi-sweet", "Belgian dark chocolate"],
-    image: "/images/closeups/ruth-chocolate-chips.png",
-    alt: "A rich chocolate chip cookie with glossy pools of chocolate.",
-    accent: "#8b4f35",
-    wash: "#f3d8c8",
-  },
-  {
-    id: "pistachio-rose",
-    name: "Ash's Daily Matcha",
-    kicker: "Earthy and creamy",
-    summary: "Earthy matcha paired with smooth Belgian white chocolate.",
-    notes: ["Matcha", "Belgian white chocolate", "smooth finish"],
-    image: "/images/closeups/ash-daily-matcha.png",
-    alt: "A matcha cookie with chunks of white chocolate.",
-    accent: "#597a42",
-    wash: "#e7efd8",
-  },
-  {
-    id: "matcha-white",
-    name: "Charlie's Triple Chocolate",
-    kicker: "For chocolate lovers",
-    summary: "Rich cocoa cookie loaded with three varieties of chocolate.",
-    notes: ["rich cocoa", "triple chocolate", "decadent bite"],
-    image: "/images/closeups/charlie-triple-chocolate.png",
-    alt: "A dark cocoa cookie with multiple chocolate mix-ins.",
-    accent: "#4a2d26",
-    wash: "#ebdfd8",
-  },
-  {
-    id: "red-velvet",
-    name: "Lotso's Strawberry Basket",
-    kicker: "Bright and fruity",
-    summary: "Sweet cookie bursting with bright, strawberry flavor.",
-    notes: ["strawberry", "sweet crumb", "fruity pop"],
-    image: "/images/closeups/lotso-strawberry-basket.png",
-    alt: "A vibrant red cookie with a soft center.",
-    accent: "#a32639",
-    wash: "#f4dbe0",
-  },
-  {
-    id: "cookies-cream",
-    name: "Garfield's Morning Brew",
-    kicker: "Bold coffee hit",
-    summary: "Bold Japanese coffee cookie topped with toasted almond slivers.",
-    notes: ["Japanese coffee", "toasted almond", "deep roast"],
-    image: "/images/closeups/garfield-morning-brew.png",
-    alt: "A coffee-toned cookie topped with almond slivers.",
-    accent: "#5a4638",
-    wash: "#efe6de",
-  },
-  {
-    id: "salted-caramel",
-    name: "Earl's Rubies",
-    kicker: "Fragrant tea notes",
-    summary: "Fragrant Earl Grey cookie dotted with tart dried cranberries.",
-    notes: ["Earl Grey", "dried cranberries", "tart finish"],
-    image: "/images/closeups/earl-rubies.png",
-    alt: "A cookie with floral notes and cranberry accents.",
-    accent: "#6d5660",
-    wash: "#efe6ea",
-  },
-];
-
 function App() {
   const currentYear = new Date().getFullYear();
+
+  const [products, setProducts] = useState([]);
+  const [loadState, setLoadState] = useState("loading");
+  const [cart, setCart] = useState({});
+  const [cartOpen, setCartOpen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchProducts()
+      .then((data) => {
+        if (!cancelled) {
+          setProducts(data);
+          setLoadState("ready");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoadState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const cookies = useMemo(
+    () =>
+      products.map((product) => ({
+        ...product,
+        slug: `cookie-${product.id}`,
+        kicker: product.taglineShort,
+        image: product.imageUrl,
+        ...getCookiePresentation(product.name),
+      })),
+    [products],
+  );
+
+  const cartItems = useMemo(
+    () =>
+      cookies
+        .filter((cookie) => cart[cookie.id] > 0)
+        .map((cookie) => ({
+          id: cookie.id,
+          name: cookie.name,
+          price: cookie.price,
+          image: cookie.image,
+          quantity: cart[cookie.id],
+        })),
+    [cookies, cart],
+  );
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  function addToCart(id) {
+    setCart((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
+  }
+
+  function incrementItem(id) {
+    setCart((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
+  }
+
+  function decrementItem(id) {
+    setCart((prev) => {
+      const next = (prev[id] ?? 0) - 1;
+      if (next <= 0) {
+        const { [id]: _removed, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [id]: next };
+    });
+  }
+
+  function removeItem(id) {
+    setCart((prev) => {
+      const { [id]: _removed, ...rest } = prev;
+      return rest;
+    });
+  }
 
   return (
     <Box sx={{ bgcolor: "background.default", color: "text.primary" }}>
@@ -232,7 +247,7 @@ function App() {
         {cookies.map((cookie, index) => (
           <IconButton
             key={cookie.id}
-            href={`#${cookie.id}`}
+            href={`#${cookie.slug}`}
             aria-label={`Jump to ${cookie.name}`}
             size="small"
             sx={{
@@ -303,7 +318,7 @@ function App() {
               sx={{ mt: 3.5 }}
             >
               <Button
-                href="#brown-butter"
+                href={cookies[0] ? `#${cookies[0].slug}` : "#top"}
                 variant="contained"
                 color="primary"
                 startIcon={<ArrowDownwardRoundedIcon />}
@@ -332,8 +347,28 @@ function App() {
           </Container>
         </Box>
 
+        {loadState === "loading" && (
+          <Box sx={{ display: "grid", placeItems: "center", py: 12 }}>
+            <CircularProgress color="secondary" />
+          </Box>
+        )}
+
+        {loadState === "error" && (
+          <Container maxWidth="sm" sx={{ py: 12 }}>
+            <Alert severity="error">
+              We couldn't load the cookie lineup right now. Please refresh the page in a moment.
+            </Alert>
+          </Container>
+        )}
+
         {cookies.map((cookie, index) => (
-          <CookieSection key={cookie.id} cookie={cookie} index={index} />
+          <CookieSection
+            key={cookie.id}
+            cookie={cookie}
+            index={index}
+            quantityInCart={cart[cookie.id] ?? 0}
+            onAdd={() => addToCart(cookie.id)}
+          />
         ))}
 
         <Box
@@ -433,16 +468,37 @@ function App() {
           </Stack>
         </Box>
       </Box>
+
+      <Fab
+        color="secondary"
+        aria-label="Open cookie box"
+        onClick={() => setCartOpen(true)}
+        sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 20 }}
+      >
+        <Badge badgeContent={cartCount} color="primary">
+          <ShoppingBagRoundedIcon />
+        </Badge>
+      </Fab>
+
+      <OrderCart
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cartItems}
+        onIncrement={incrementItem}
+        onDecrement={decrementItem}
+        onRemove={removeItem}
+        onOrderPlaced={() => setCart({})}
+      />
     </Box>
   );
 }
 
-function CookieSection({ cookie, index }) {
+function CookieSection({ cookie, index, quantityInCart, onAdd }) {
   return (
     <Box
       component="section"
-      id={cookie.id}
-      aria-labelledby={`${cookie.id}-title`}
+      id={cookie.slug}
+      aria-labelledby={`${cookie.slug}-title`}
       sx={{
         px: { xs: 2, md: 7 },
         py: { xs: 7, md: 9 },
@@ -522,10 +578,10 @@ function CookieSection({ cookie, index }) {
                 fontSize: "0.9rem",
               }}
             >
-              {cookie.kicker.toUpperCase()}
+              {cookie.kicker?.toUpperCase()}
             </Typography>
             <Typography
-              id={`${cookie.id}-title`}
+              id={`${cookie.slug}-title`}
               variant="h2"
               sx={{
                 maxWidth: "100%",
@@ -581,20 +637,26 @@ function CookieSection({ cookie, index }) {
               ))}
             </Stack>
 
-            <Button
-              disabled
-              startIcon={<ShoppingBagRoundedIcon />}
-              sx={{
-                mt: 1.2,
-                width: { xs: "100%", sm: "fit-content" },
-                borderRadius: 99,
-                px: 2.2,
-                py: 1,
-                fontWeight: 800,
-              }}
-            >
-              Online ordering launching soon
-            </Button>
+            <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 1.2 }}>
+              <Button
+                onClick={onAdd}
+                startIcon={<ShoppingBagRoundedIcon />}
+                sx={{
+                  width: { xs: "100%", sm: "fit-content" },
+                  borderRadius: 99,
+                  px: 2.2,
+                  py: 1,
+                  fontWeight: 800,
+                }}
+              >
+                Add to box — ${cookie.price.toFixed(2)}
+              </Button>
+              {quantityInCart > 0 && (
+                <Typography sx={{ fontWeight: 700, color: cookie.accent }}>
+                  {quantityInCart} in box
+                </Typography>
+              )}
+            </Stack>
           </CardContent>
         </Box>
       </Card>

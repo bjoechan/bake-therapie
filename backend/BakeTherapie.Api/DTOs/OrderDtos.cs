@@ -4,19 +4,22 @@ using BakeTherapie.Api.Models.Enums;
 
 namespace BakeTherapie.Api.DTOs;
 
+// Validation attributes must target the primary constructor parameters directly (no
+// `property:` specifier) — ASP.NET Core's model validation throws at request time otherwise,
+// since it requires record validation metadata to live on the parameter, not the property.
 public record CreateOrderItemRequest(
-    [property: Required] int ProductId,
-    [property: Range(1, 100)] int Quantity);
+    [Required] int ProductId,
+    [Range(1, 100)] int Quantity);
 
 public record CreateOrderRequest(
-    [property: Required, StringLength(200)] string CustomerName,
-    [property: Required, StringLength(50)] string CustomerPhone,
-    [property: Required, EmailAddress, StringLength(320)] string CustomerEmail,
+    [Required, StringLength(200)] string CustomerName,
+    [Required, StringLength(50)] string CustomerPhone,
+    [Required, EmailAddress, StringLength(320)] string CustomerEmail,
     bool MarketingOptIn,
-    [property: Required] FulfillmentType FulfillmentType,
+    [Required] FulfillmentType FulfillmentType,
     string? PickupLocation,
-    [property: Required, StringLength(200)] string TransactionLocation,
-    [property: Required, MinLength(1)] List<CreateOrderItemRequest> Items);
+    [Required, StringLength(200)] string TransactionLocation,
+    [Required, MinLength(1)] List<CreateOrderItemRequest> Items);
 
 public record OrderItemDto(int ProductId, string ProductName, decimal UnitPrice, int Quantity)
 {
