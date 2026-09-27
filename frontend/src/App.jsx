@@ -637,7 +637,7 @@ function CookieSection({ cookie, index, quantityInCart, onAdd }) {
               ))}
             </Stack>
 
-            <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 1.2 }}>
+            <Stack direction="row" spacing={1.5} sx={{ mt: 1.2, alignItems: "center" }}>
               <Button
                 onClick={onAdd}
                 startIcon={<ShoppingBagRoundedIcon />}
@@ -652,7 +652,7 @@ function CookieSection({ cookie, index, quantityInCart, onAdd }) {
                 Add to box — ${cookie.price.toFixed(2)}
               </Button>
               {quantityInCart > 0 && (
-                <Typography sx={{ fontWeight: 700, color: cookie.accent }}>
+                <Typography sx={{ fontWeight: 700, color: cookie.accent, lineHeight: 1 }}>
                   {quantityInCart} in box
                 </Typography>
               )}
