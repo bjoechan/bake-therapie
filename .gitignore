@@ -3,11 +3,4 @@ dist
 .DS_Store
 .env
 .env.local
-.env.development
-.env.production
 *.log
-
-# .NET
-backend/**/bin/
-backend/**/obj/
-*.user
